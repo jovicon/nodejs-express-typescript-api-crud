@@ -2,7 +2,7 @@
   "name": "nodejs-express-typescript-api-crud",
   "version": "1.0.0",
   "description": "nodejs express typescript api - crud",
-  "main": "index.js",
+  "main": "index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon --config nodemon.json src/index.ts",
@@ -12,7 +12,12 @@
     "format": "eslint src/**/*.ts --fix",
     "prettier:base": "prettier --parser typescript --single-quote",
     "prettier:check": "npm run prettier:base -- --list-different \"src/**/*.{ts,tsx}\"",
-    "prettier:write": "npm run prettier:base -- --write \"src/**/*.{ts,tsx}\""
+    "prettier:write": "npm run prettier:base -- --write \"src/**/*.{ts,tsx}\"",
+    "prestart": "npm run build",
+    "start": "npm run serve",
+    "serve": "node ./dist/index.js",
+    "build": "npm run build-ts && npm run lint",
+    "build-ts": "tsc -p tsconfig.json"
   },
   "repository": {
     "type": "git",
