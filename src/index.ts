@@ -14,11 +14,11 @@ dotenv.config();
 if (!process.env.PORT) {
   process.exit(1);
 }
-const PORT: number = parseInt(process.env.PORT as string, 10);
+const PORT: number = parseInt(process.env.PORT, 10);
 const app = express();
 
 /**
- *  App Configuration
+ * App Configuration
  */
 app.use(helmet());
 app.use(cors());
@@ -28,6 +28,6 @@ app.use(express.json());
  * Server Activation
  */
 app.listen(PORT, () => {
-  // tslint:disable-next-line: no-console
+  // eslint-disable-next-line no-console
   console.log(`Listening on port ${PORT}`);
 });
