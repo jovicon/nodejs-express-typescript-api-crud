@@ -13,6 +13,7 @@
     "prettier:base": "prettier --parser typescript --single-quote",
     "prettier:check": "npm run prettier:base -- --list-different \"src/**/*.{ts,tsx}\"",
     "prettier:write": "npm run prettier:base -- --write \"src/**/*.{ts,tsx}\"",
+    "husky:prepare": "husky install",
     "prestart": "npm run build",
     "start": "npm run serve",
     "serve": "node ./dist/index.js",
