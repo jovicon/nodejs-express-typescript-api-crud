@@ -15,6 +15,7 @@ dotenv.config();
  */
 const PORT: number = process.env.PORT ? +process.env.PORT : 3000;
 const app = express();
+const logger = new Logger();
 
 /**
  * App Configuration
@@ -27,16 +28,16 @@ app.use(express.json());
  * Server Activation
  */
 app.listen(PORT, () => {
-  Logger.server('|------------------------------------------------------------------|');
-  Logger.server('| JOVICON');
-  Logger.server('|------------------------------------------------------------------|');
-  Logger.server('| TEMPLATE EXPRESS TYPESCRIPT MS');
-  Logger.server(`| Server REST OK: Port ${PORT}`);
-  Logger.server('|------------------------------------------------------------------|');
-  Logger.server('| Routes Enabled');
-  Logger.server('|------------------------------------------------------------------|');
+  logger.server('|------------------------------------------------------------------|');
+  logger.server('| JOVICON');
+  logger.server('|------------------------------------------------------------------|');
+  logger.server('| TEMPLATE EXPRESS TYPESCRIPT MS');
+  logger.server(`| Server REST OK: Port ${PORT}`);
+  logger.server('|------------------------------------------------------------------|');
+  logger.server('| Routes Enabled');
+  logger.server('|------------------------------------------------------------------|');
   listEndpoints(app).forEach((route: any, index: number) => {
-    Logger.server(`${index + 1}.- ${JSON.stringify(route)}`);
+    logger.server(`${index + 1}.- ${JSON.stringify(route)}`);
   });
-  Logger.server('|------------------------------------------------------------------|\n');
+  logger.server('|------------------------------------------------------------------|\n');
 });

@@ -12,7 +12,7 @@ export default class Logger {
     return moment.utc(moment.utc()).local().format('DD-MM-YYYY HH:mm:ss.SSS').toString();
   }
 
-  static server = (message: string): void => {
+  public server = (message: string): void => {
     log(
       chalk.white(`${`[${Logger.id}]`}`),
       chalk.white(`${`[${Logger.getTimeStamp()}]`}`),
@@ -21,7 +21,7 @@ export default class Logger {
     );
   };
 
-  static success = (message: string): void => {
+  public success = (message: string): void => {
     log(
       chalk.white(`${`[${Logger.id}]`}`),
       chalk.white(`${`[${Logger.getTimeStamp()}]`}`),
@@ -30,7 +30,7 @@ export default class Logger {
     );
   };
 
-  static info = (message: string): void => {
+  public info = (message: string): void => {
     log(
       chalk.white(`${`[${Logger.id}]`}`),
       chalk.white(`${`[${Logger.getTimeStamp()}]`}`),
@@ -40,7 +40,7 @@ export default class Logger {
     log(`${`[${Logger.getTimeStamp()}]`}`, `${'[INFO]'}`, message);
   };
 
-  static debug = (message: string): void => {
+  public debug = (message: string): void => {
     log(
       chalk.white(`${`[${Logger.id}]`}`),
       chalk.white(`${`[${Logger.getTimeStamp()}]`}`),
@@ -49,7 +49,7 @@ export default class Logger {
     );
   };
 
-  static warn = (message: string): void => {
+  public warn = (message: string): void => {
     log(
       chalk.white(`${`[${Logger.id}]`}`),
       chalk.white(`${`[${Logger.getTimeStamp()}]`}`),
@@ -59,7 +59,7 @@ export default class Logger {
     log(`${`[${Logger.getTimeStamp()}]`}`, `${'[WARN]'}`, message);
   };
 
-  static error = (message: string): void => {
+  public error = (message: string): void => {
     log(
       chalk.white(`${`[${Logger.id}]`}`),
       chalk.white(`${`[${Logger.getTimeStamp()}]`}`),
