@@ -99,6 +99,8 @@ module.exports = {
         },
       },
     ],
+    '@typescript-eslint/no-unsafe-member-access': 'off',
+    '@typescript-eslint/no-unsafe-call': 'off',
     '@typescript-eslint/naming-convention': 'error',
     '@typescript-eslint/no-empty-function': 'error',
     '@typescript-eslint/no-empty-interface': 'error',
