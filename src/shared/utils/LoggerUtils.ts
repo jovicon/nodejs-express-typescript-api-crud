@@ -6,8 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 const log = console.log;
 
 export default class Logger {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-  private static id = uuidv4() as string;
+  private static id = uuidv4();
 
   private static getTimeStamp() {
     return moment.utc(moment.utc()).local().format('DD-MM-YYYY HH:mm:ss.SSS').toString();
