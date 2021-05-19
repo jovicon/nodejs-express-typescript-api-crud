@@ -1,4 +1,4 @@
-export interface ContactData {
+export interface ContactDTO {
   name?: string;
   rut?: string;
   phone?: string;

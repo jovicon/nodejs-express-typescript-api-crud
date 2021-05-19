@@ -2,22 +2,21 @@ import { AggregateRoot } from '../../../shared/domain/AggregateRoot';
 import { Result } from '../../../shared/core/Result';
 import { Guard } from '../../../shared/core/Guard';
 import { ExecutiveID } from './dialerExecutiveId';
-import { ContactData } from './contact/contact';
-import { DialerId } from './dialerId';
+import { ContactProps } from './contact/contact';
+import { DialerPhone } from './dialerPhone';
 
-interface DialerProps {
+export interface DialerProps {
   executiveID: ExecutiveID;
-  contactData?: ContactData;
+  phone: DialerPhone;
+  contactData?: ContactProps;
 }
 
 export class Dialer extends AggregateRoot<DialerProps> {
-  // get dialerId(): DialerId {
-  //   return DialerId.create(this._id).getValue();
-  // }
-
   private constructor(props: DialerProps) {
     super(props);
   }
+
+  // TODO: metodo para poder recibir todos los valores en JSON
 
   public static create(props: DialerProps): Result<Dialer> {
     const guardResult = Guard.againstNullOrUndefinedBulk([

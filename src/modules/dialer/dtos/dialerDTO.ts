@@ -1,9 +1,9 @@
-import { ContactData } from './contactDTO';
+import { ContactDTO } from './contactDTO';
 
 export interface DialerDTO {
   executiveID: string;
   phone: string;
-  contactData?: ContactData;
+  contactData?: ContactDTO;
   createdAt: Date;
   updatedAt: Date;
 }

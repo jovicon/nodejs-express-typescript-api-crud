@@ -7,6 +7,7 @@ import cors from 'cors';
 import helmet from 'helmet';
 import listEndpoints from 'express-list-endpoints';
 import Logger from '../../utils/LoggerUtils';
+import { v1Router } from './api/v1';
 
 dotenv.config();
 
@@ -23,6 +24,7 @@ const logger = new Logger();
 app.use(helmet());
 app.use(cors());
 app.use(express.json());
+app.use('/api/v1', v1Router);
 
 /**
  * Server Activation

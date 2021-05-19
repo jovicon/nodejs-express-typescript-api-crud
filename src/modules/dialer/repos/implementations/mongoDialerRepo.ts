@@ -11,25 +11,30 @@ export class MongoDialerRepo implements IDialerRepo {
   private mongo: Mongo = new Mongo();
   private logger: Logger;
 
-  constructor(mongo: Mongo, logger: Logger) {
-    this.mongo = mongo;
+  constructor(logger: Logger) {
     this.logger = logger;
   }
 
   async save(dialer: Dialer): Promise<void> {
     try {
-      const collectionLeadHistory = await this.mongo.getCollection(
-        process.env.DIALER_COLLECTION as string
-      );
+      this.logger.info(`MongoDialerRepo: ${JSON.stringify(dialer.props)}`);
+      const { executiveID, phone, contactData } = dialer.props;
+      this.logger.info(`MongoDialerRepo: ${JSON.stringify(executiveID)}`);
+      this.logger.info(`MongoDialerRepo: ${JSON.stringify(phone)}`);
+      this.logger.info(`MongoDialerRepo: ${JSON.stringify(contactData)}`);
 
-      collectionLeadHistory
-        .insertOne({
-          ...dialer,
-        })
-        .catch((error: any) => {
-          this.logger.error(`[path] [FAILED] [Mongo insert one] [${error.message as string}]`);
-          // throw new HttpError('ERROR_MONGO_INSERT_ONE', 'Mongo insert one element');
-        });
+      // const collectionLeadHistory = await this.mongo.getCollection(
+      //   process.env.DIALER_COLLECTION as string
+      // );
+
+      // collectionLeadHistory
+      //   .insertOne({
+      //     ...dialer,
+      //   })
+      //   .catch((error: any) => {
+      //     this.logger.error(`[path] [FAILED] [Mongo insert one] [${error.message as string}]`);
+      //     // throw new HttpError('ERROR_MONGO_INSERT_ONE', 'Mongo insert one element');
+      //   });
 
       this.logger.info('[path] [OK] [Insert URL in Mongo]');
       await this.mongo.closeConnect();
