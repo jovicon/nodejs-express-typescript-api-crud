@@ -34,17 +34,16 @@ export default class Logger {
     log(
       chalk.white(`${`[${Logger.id}]`}`),
       chalk.white(`${`[${Logger.getTimeStamp()}]`}`),
-      chalk.italic.green(`${'[SUCCESS]'}`),
+      chalk.italic.green(`${'[INFO]'}`),
       chalk.italic.green(message)
     );
-    log(`${`[${Logger.getTimeStamp()}]`}`, `${'[INFO]'}`, message);
   };
 
   public debug = (message: string): void => {
     log(
       chalk.white(`${`[${Logger.id}]`}`),
       chalk.white(`${`[${Logger.getTimeStamp()}]`}`),
-      chalk.bold.blue(`${'[SUCCESS]'}`),
+      chalk.bold.blue(`${'[DEBUG]'}`),
       chalk.bold.blue(message)
     );
   };
@@ -53,19 +52,17 @@ export default class Logger {
     log(
       chalk.white(`${`[${Logger.id}]`}`),
       chalk.white(`${`[${Logger.getTimeStamp()}]`}`),
-      chalk.bold.yellow(`${'[SUCCESS]'}`),
+      chalk.bold.yellow(`${'[WARN]'}`),
       chalk.bold.yellow(message)
     );
-    log(`${`[${Logger.getTimeStamp()}]`}`, `${'[WARN]'}`, message);
   };
 
   public error = (message: string): void => {
     log(
       chalk.white(`${`[${Logger.id}]`}`),
       chalk.white(`${`[${Logger.getTimeStamp()}]`}`),
-      chalk.bold.red(`${'[SUCCESS]'}`),
+      chalk.bold.red(`${'[ERROR]'}`),
       chalk.bold.red(message)
     );
-    log(`${`[${Logger.getTimeStamp()}]`}`, `${'[ERROR]'}`, message);
   };
 }

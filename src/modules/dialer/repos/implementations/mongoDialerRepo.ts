@@ -23,25 +23,31 @@ export class MongoDialerRepo implements IDialerRepo {
       this.logger.info(`MongoDialerRepo: ${JSON.stringify(phone)}`);
       this.logger.info(`MongoDialerRepo: ${JSON.stringify(contactData)}`);
 
-      // const collectionLeadHistory = await this.mongo.getCollection(
-      //   process.env.DIALER_COLLECTION as string
-      // );
+      this.logger.info(`MongoDialerRepo: ${process.env.DIALER_COLLECTION as string}`);
 
-      // collectionLeadHistory
-      //   .insertOne({
-      //     ...dialer,
-      //   })
-      //   .catch((error: any) => {
-      //     this.logger.error(`[path] [FAILED] [Mongo insert one] [${error.message as string}]`);
-      //     // throw new HttpError('ERROR_MONGO_INSERT_ONE', 'Mongo insert one element');
-      //   });
+      await this.mongo.openConnect();
+      const collectionLeadHistory = await this.mongo
+        .getCollection(process.env.DIALER_COLLECTION as string)
+        .then((result) => result);
 
-      this.logger.info('[path] [OK] [Insert URL in Mongo]');
+      if (collectionLeadHistory) {
+        await collectionLeadHistory
+          .insertOne({
+            ...dialer,
+          })
+          .catch((error: any) => {
+            this.logger.error(`[path] [FAILED] [Mongo insert one] [${error.message as string}]`);
+            // throw new HttpError('ERROR_MONGO_INSERT_ONE', 'Mongo insert one element');
+          });
+      }
+
       await this.mongo.closeConnect();
+      this.logger.info('[path] [OK] [Insert URL in Mongo]');
     } catch (error) {
       this.logger.error(`[path] [ERROR] [${error.message as string}]`);
-    } finally {
-      await this.mongo.closeConnect();
     }
+    // } finally {
+    //   await this.mongo.closeConnect();
+    // }
   }
 }

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/await-thenable */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /**
@@ -57,18 +58,18 @@ export class Mongo {
   }
 
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-  // async getCollection(collection: string) {
-  //   try {
-  //     if (this.mongoClient) {
-  //       const getCollection = await this.mongoClient.db(credentials.db).collection(collection);
-  //       // Logger.info(`[GetCollection] [OK] [Collection: ${collection}]`);
-  //       return getCollection;
-  //     }
-  //   } catch (error) {
-  //     // Logger.error(`[GetCollection] [FAIL] [${error.message as string}]`);
-  //     // throw new HttpError(GENERIC_ERROR, error.message);
-  //   }
-  // }
+  async getCollection(collection: string) {
+    try {
+      if (this.mongoClient) {
+        const getCollection = await this.mongoClient.db(credentials.db).collection(collection);
+        // Logger.info(`[GetCollection] [OK] [Collection: ${collection}]`);
+        return getCollection;
+      }
+    } catch (error) {
+      // Logger.error(`[GetCollection] [FAIL] [${error.message as string}]`);
+      // throw new HttpError(GENERIC_ERROR, error.message);
+    }
+  }
 
   async closeConnect(): Promise<void> {
     try {
