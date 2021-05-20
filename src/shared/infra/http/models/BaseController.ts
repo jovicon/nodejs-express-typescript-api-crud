@@ -26,7 +26,7 @@ export abstract class BaseController {
     }
   }
 
-  public created(res: express.Response) {
+  public created(res: express.Response): express.Response {
     return res.sendStatus(201);
   }
 

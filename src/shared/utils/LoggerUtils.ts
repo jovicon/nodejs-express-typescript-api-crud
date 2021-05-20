@@ -6,7 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 const log = console.log;
 
 export default class Logger {
-  private static id = uuidv4();
+  private id = uuidv4();
 
   private static getTimeStamp() {
     return moment.utc(moment.utc()).local().format('DD-MM-YYYY HH:mm:ss.SSS').toString();
@@ -14,7 +14,7 @@ export default class Logger {
 
   public server = (message: string): void => {
     log(
-      chalk.white(`${`[${Logger.id}]`}`),
+      chalk.white(`${`[${this.id}]`}`),
       chalk.white(`${`[${Logger.getTimeStamp()}]`}`),
       chalk.bold.green(`${'[SERVER]'}`),
       chalk.bold.green(message)
@@ -23,7 +23,7 @@ export default class Logger {
 
   public success = (message: string): void => {
     log(
-      chalk.white(`${`[${Logger.id}]`}`),
+      chalk.white(`${`[${this.id}]`}`),
       chalk.white(`${`[${Logger.getTimeStamp()}]`}`),
       chalk.bold.green(`${'[SUCCESS]'}`),
       chalk.bold.green(message)
@@ -32,7 +32,7 @@ export default class Logger {
 
   public info = (message: string): void => {
     log(
-      chalk.white(`${`[${Logger.id}]`}`),
+      chalk.white(`${`[${this.id}]`}`),
       chalk.white(`${`[${Logger.getTimeStamp()}]`}`),
       chalk.italic.green(`${'[INFO]'}`),
       chalk.italic.green(message)
@@ -41,7 +41,7 @@ export default class Logger {
 
   public debug = (message: string): void => {
     log(
-      chalk.white(`${`[${Logger.id}]`}`),
+      chalk.white(`${`[${this.id}]`}`),
       chalk.white(`${`[${Logger.getTimeStamp()}]`}`),
       chalk.bold.blue(`${'[DEBUG]'}`),
       chalk.bold.blue(message)
@@ -50,7 +50,7 @@ export default class Logger {
 
   public warn = (message: string): void => {
     log(
-      chalk.white(`${`[${Logger.id}]`}`),
+      chalk.white(`${`[${this.id}]`}`),
       chalk.white(`${`[${Logger.getTimeStamp()}]`}`),
       chalk.bold.yellow(`${'[WARN]'}`),
       chalk.bold.yellow(message)
@@ -59,7 +59,7 @@ export default class Logger {
 
   public error = (message: string): void => {
     log(
-      chalk.white(`${`[${Logger.id}]`}`),
+      chalk.white(`${`[${this.id}]`}`),
       chalk.white(`${`[${Logger.getTimeStamp()}]`}`),
       chalk.bold.red(`${'[ERROR]'}`),
       chalk.bold.red(message)

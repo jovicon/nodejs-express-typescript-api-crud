@@ -4,10 +4,17 @@ import { Guard } from '../../../shared/core/Guard';
 import { ExecutiveID } from './dialerExecutiveId';
 import { ContactProps } from './contact/contact';
 import { DialerPhone } from './dialerPhone';
+import Logger from '../../../shared/utils/LoggerUtils';
 
 export interface DialerProps {
   executiveID: ExecutiveID;
   phone: DialerPhone;
+  contactData?: ContactProps;
+}
+
+interface DialerJson {
+  executiveID: string;
+  phone: string;
   contactData?: ContactProps;
 }
 
@@ -16,7 +23,20 @@ export class Dialer extends AggregateRoot<DialerProps> {
     super(props);
   }
 
-  // TODO: metodo para poder recibir todos los valores en JSON
+  get dialerToJson(): DialerJson {
+    const dialer: DialerJson = {
+      executiveID: this.props.executiveID.value,
+      phone: this.props.phone.value,
+      contactData: {
+        name: this.props.contactData?.name,
+        rut: this.props.contactData?.rut,
+        phone: this.props.contactData?.phone,
+        email: this.props.contactData?.email,
+        note: this.props.contactData?.note,
+      },
+    };
+    return dialer;
+  }
 
   public static create(props: DialerProps): Result<Dialer> {
     const guardResult = Guard.againstNullOrUndefinedBulk([
@@ -26,6 +46,9 @@ export class Dialer extends AggregateRoot<DialerProps> {
     if (!guardResult.succeeded) {
       return Result.fail<Dialer>(guardResult.message as string);
     }
+
+    const logger = new Logger();
+    logger.info(`Dialer: ${JSON.stringify(props)}`);
 
     const dialer = new Dialer({
       ...props,

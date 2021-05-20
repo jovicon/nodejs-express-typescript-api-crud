@@ -14,6 +14,14 @@ export interface ContactProps {
   note?: ContactNote;
 }
 
+export interface ContactJson {
+  name?: string;
+  rut?: string;
+  phone?: string;
+  email?: string;
+  note?: string;
+}
+
 export class Contact extends AggregateRoot<ContactProps> {
   get name(): ContactName | undefined {
     return this.props.name;

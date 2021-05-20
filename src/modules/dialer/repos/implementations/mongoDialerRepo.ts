@@ -17,14 +17,6 @@ export class MongoDialerRepo implements IDialerRepo {
 
   async save(dialer: Dialer): Promise<void> {
     try {
-      this.logger.info(`MongoDialerRepo: ${JSON.stringify(dialer.props)}`);
-      const { executiveID, phone, contactData } = dialer.props;
-      this.logger.info(`MongoDialerRepo: ${JSON.stringify(executiveID)}`);
-      this.logger.info(`MongoDialerRepo: ${JSON.stringify(phone)}`);
-      this.logger.info(`MongoDialerRepo: ${JSON.stringify(contactData)}`);
-
-      this.logger.info(`MongoDialerRepo: ${process.env.DIALER_COLLECTION as string}`);
-
       await this.mongo.openConnect();
       const collectionLeadHistory = await this.mongo
         .getCollection(process.env.DIALER_COLLECTION as string)
@@ -33,7 +25,7 @@ export class MongoDialerRepo implements IDialerRepo {
       if (collectionLeadHistory) {
         await collectionLeadHistory
           .insertOne({
-            ...dialer,
+            ...dialer.dialerToJson,
           })
           .catch((error: any) => {
             this.logger.error(`[path] [FAILED] [Mongo insert one] [${error.message as string}]`);
@@ -41,13 +33,11 @@ export class MongoDialerRepo implements IDialerRepo {
           });
       }
 
-      await this.mongo.closeConnect();
       this.logger.info('[path] [OK] [Insert URL in Mongo]');
     } catch (error) {
-      this.logger.error(`[path] [ERROR] [${error.message as string}]`);
+      this.logger.error(`[path] [MongoDialerRepo] [ERROR] [${error.message as string}]`);
+    } finally {
+      await this.mongo.closeConnect();
     }
-    // } finally {
-    //   await this.mongo.closeConnect();
-    // }
   }
 }

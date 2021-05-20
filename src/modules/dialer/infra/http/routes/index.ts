@@ -1,12 +1,30 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
 import express from 'express';
-import { createDialerController } from '../../../useCases/createDialer';
+import { createDialerHandler } from './handlers';
+
 const dialerRouter = express.Router();
 
-// dialerRouter.post('/', middleware.ensureAuthenticated(), (req, res) =>
-//   createDialerController.execute(req, res)
-// );
+// dialerRouter.post('/', (req, res) => {
+//   void (async () => {
+//     await createDialerHandler(req, res)
+//       .then(() => res.status(200))
+//       .catch((error) => {
+//         res.status(500).send({
+//           error: error as string,
+//         });
+//       });
+//   })();
+// });
 
-// eslint-disable-next-line @typescript-eslint/no-misused-promises
-dialerRouter.post('/', (req, res) => createDialerController.execute(req, res));
+dialerRouter.post('/', async (req, res) => {
+  try {
+    await createDialerHandler(req, res);
+    res.status(200);
+  } catch (error) {
+    res.status(500).send({
+      error: error as string,
+    });
+  }
+});
 
 export { dialerRouter };

@@ -45,10 +45,11 @@ export class Mongo {
     // Logger.info(`[MONGO] [INIT] [URI] [${this.uri}]`);
   }
 
-  async openConnect() {
+  async openConnect(): Promise<MongoClient> {
     if (!this.mongoClient) {
       this.mongoClient = await MongoClient.connect(this.uri as string, {
         useNewUrlParser: true,
+        useUnifiedTopology: true,
       }).then((mongoClientConnection) => mongoClientConnection);
       // Logger.info('[OpenConnect] [OK]');
       return this.mongoClient;
