@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/indent */
+import { injectable } from 'tsyringe';
 import { BaseController } from '../../../../shared/infra/http/models/BaseController';
 import { CreateDialer } from './CreateDialer';
 import { CreateDialerDTO } from './CreateDialerDTO';
@@ -6,7 +7,7 @@ import { DecodedExpressRequest } from '../../infra/http/models/decodedResquest';
 import { CreateDialerErrors } from './CreateDialerErrors';
 // import { TextUtils } from '../../../../shared/utils/TextUtils';
 // import * as express from 'express';
-
+@injectable()
 export class CreateDialerController extends BaseController {
   private useCase: CreateDialer;
 

@@ -18,6 +18,7 @@ interface DialerJson {
   contactData?: ContactProps;
 }
 
+// Factory method
 export class Dialer extends AggregateRoot<DialerProps> {
   private constructor(props: DialerProps) {
     super(props);
@@ -48,7 +49,7 @@ export class Dialer extends AggregateRoot<DialerProps> {
     }
 
     const logger = new Logger();
-    logger.info(`Dialer: ${JSON.stringify(props)}`);
+    logger.info(`[Dialer]: ${JSON.stringify(props)}`);
 
     const dialer = new Dialer({
       ...props,

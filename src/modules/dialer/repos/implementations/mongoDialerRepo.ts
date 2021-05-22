@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import * as dotenv from 'dotenv';
+import { injectable } from 'tsyringe';
 import { IDialerRepo } from '../dialerRepo';
 import { Dialer } from '../../domain/dialer';
 import { Mongo } from '../../../../shared/infra/database/mongo/index';
@@ -7,6 +8,7 @@ import Logger from '../../../../shared/utils/LoggerUtils';
 
 dotenv.config();
 
+@injectable()
 export class MongoDialerRepo implements IDialerRepo {
   private mongo: Mongo = new Mongo();
   private logger: Logger;
@@ -28,14 +30,18 @@ export class MongoDialerRepo implements IDialerRepo {
             ...dialer.dialerToJson,
           })
           .catch((error: any) => {
-            this.logger.error(`[path] [FAILED] [Mongo insert one] [${error.message as string}]`);
+            // eslint-disable-next-line curly
+            if (this.logger)
+              this.logger.error(`[path] [FAILED] [Mongo insert one] [${error.message as string}]`);
             // throw new HttpError('ERROR_MONGO_INSERT_ONE', 'Mongo insert one element');
           });
       }
 
-      this.logger.info('[path] [OK] [Insert URL in Mongo]');
+      if (this.logger) this.logger.info('[path] [MongoDialerRepo] [OK] [Insert URL in Mongo]');
     } catch (error) {
-      this.logger.error(`[path] [MongoDialerRepo] [ERROR] [${error.message as string}]`);
+      // eslint-disable-next-line curly
+      if (this.logger)
+        this.logger.error(`[path] [MongoDialerRepo] [ERROR] [${error.message as string}]`);
     } finally {
       await this.mongo.closeConnect();
     }

@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/indent */
+import { injectable, inject } from 'tsyringe';
 import { UseCase } from '../../../../shared/core/UseCase';
 import { IDialerRepo } from '../../repos/dialerRepo';
 import { Either, Result, left, right } from '../../../../shared/core/Result';
@@ -9,17 +10,20 @@ import { Dialer, DialerProps } from '../../domain/dialer';
 import { ExecutiveID } from '../../domain/dialerExecutiveId';
 import { DialerPhone } from '../../domain/dialerPhone';
 import { Contact } from '../../domain/contact/contact';
+import Logger from '../../../../shared/utils/LoggerUtils';
 
 type Response = Either<
   CreateDialerErrors.MemberDoesntExistError | AppError.UnexpectedError | Result<any>,
   Result<void>
 >;
-
+@injectable()
 export class CreateDialer implements UseCase<CreateDialerDTO, Promise<Response>> {
   private dialerRepo: IDialerRepo;
+  private logger: Logger;
 
-  constructor(dialerRepo: IDialerRepo) {
+  constructor(@inject('dialerRepo') dialerRepo: IDialerRepo, logger: Logger) {
     this.dialerRepo = dialerRepo;
+    this.logger = logger;
   }
 
   public async execute(request: CreateDialerDTO): Promise<Response> {
@@ -66,7 +70,7 @@ export class CreateDialer implements UseCase<CreateDialerDTO, Promise<Response>>
       }
 
       dialer = postOrError.getValue();
-
+      this.logger.info(`[CreateDialer] ${JSON.stringify(dialer.dialerToJson)}`);
       await this.dialerRepo.save(dialer);
 
       return right(Result.ok<void>());

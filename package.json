@@ -76,6 +76,8 @@
     "jsdom": "^16.5.3",
     "moment": "^2.29.1",
     "mongodb": "^3.6.7",
+    "reflect-metadata": "^0.1.13",
+    "tsyringe": "^4.5.0",
     "uuid": "^8.3.2",
     "validator": "^13.6.0"
   },
