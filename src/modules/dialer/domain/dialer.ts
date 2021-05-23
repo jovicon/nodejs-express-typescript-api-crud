@@ -4,7 +4,6 @@ import { Guard } from '../../../shared/core/Guard';
 import { ExecutiveID } from './dialerExecutiveId';
 import { ContactProps } from './contact/contact';
 import { DialerPhone } from './dialerPhone';
-import Logger from '../../../shared/utils/LoggerUtils';
 
 export interface DialerProps {
   executiveID: ExecutiveID;
@@ -42,20 +41,18 @@ export class Dialer extends AggregateRoot<DialerProps> {
   public static create(props: DialerProps): Result<Dialer> {
     const guardResult = Guard.againstNullOrUndefinedBulk([
       { argument: props.executiveID, argumentName: 'executiveID' },
+      { argument: props.phone, argumentName: 'phone' },
     ]);
 
     if (!guardResult.succeeded) {
       return Result.fail<Dialer>(guardResult.message as string);
     }
 
-    const logger = new Logger();
-    logger.info(`[Dialer]: ${JSON.stringify(props)}`);
-
     const dialer = new Dialer({
       ...props,
     });
 
-    // revisar los dominios
+    // TODO: domain events
     // if (isNewUser) {
     //   user.addDomainEvent(new UserCreated(user));
     // }

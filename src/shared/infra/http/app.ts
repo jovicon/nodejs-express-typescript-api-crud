@@ -1,4 +1,3 @@
-import 'reflect-metadata';
 /**
  * Required External Modules
  */
@@ -7,7 +6,7 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import listEndpoints from 'express-list-endpoints';
-import Logger from '../../utils/LoggerUtils';
+import { HttpLoggerCreator } from '../../utils/logger';
 import { v1Router } from './api/v1';
 
 dotenv.config();
@@ -17,7 +16,8 @@ dotenv.config();
  */
 const PORT: number = process.env.PORT ? +process.env.PORT : 3000;
 const app = express();
-const logger = new Logger();
+const loggerCreator = new HttpLoggerCreator();
+const logger = loggerCreator.factoryMethod();
 
 /**
  * App Configuration

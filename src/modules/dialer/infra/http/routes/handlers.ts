@@ -1,27 +1,32 @@
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 import { dialerRepo, CreateDialer, CreateDialerController } from '../../../useCases/createDialer';
-import Logger from '../../../../../shared/utils/LoggerUtils';
+import { ILogger } from '../../../../../shared/utils/logger/ILogger';
 
-export const createDialerHandler = async (req: Request, res: Response): Promise<void> => {
+export const createDialerHandler = async (
+  req: Request,
+  res: Response,
+  logger: ILogger
+): Promise<void> => {
+  logger.info('[createDialerHandler] [BEGIN]');
   try {
-    const logger = new Logger();
-    logger.info('[createDialerHandler] [BEGIN]');
-    const loggerContainer = container.register('logger', { useValue: logger });
+    const createDialerHandlerContainer = container.register('logger', { useValue: logger });
 
-    const dialerRepository = loggerContainer.resolve(dialerRepo);
-    loggerContainer.register('dialerRepo', { useValue: dialerRepository });
+    const dialerRepository = createDialerHandlerContainer.resolve(dialerRepo);
+    createDialerHandlerContainer.register('dialerRepo', { useValue: dialerRepository });
 
     const createDialer = container.resolve(CreateDialer);
-    // const createDialer = new CreateDialer(dialerRepository);
+    createDialerHandlerContainer.register('useCase', { useValue: createDialer });
 
-    loggerContainer.register('useCase', { useValue: createDialer });
-    const createDialerController = loggerContainer.resolve(CreateDialerController);
-    // const createDialerController = new CreateDialerController(createDialer);
+    const createDialerController = createDialerHandlerContainer.resolve(CreateDialerController);
 
-    return await createDialerController.execute(req, res);
+    const result = await createDialerController.execute(req, res);
+
+    logger.info('[createDialerHandler] [END]');
+    return result;
   } catch (error) {
-    // logger.error(`[createDialerHandler] ${error as string}`);
+    logger.error(`[createDialerHandler] ${error as string}`);
+    logger.info('[createDialerHandler] [END]');
     throw new Error(`${error as string}`);
   }
 };

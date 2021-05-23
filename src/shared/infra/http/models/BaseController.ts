@@ -17,13 +17,13 @@ export abstract class BaseController {
     return res.status(code).json({ message });
   }
 
-  public ok<T>(res: express.Response, dto?: T) {
-    if (!dto) {
-      res.type('application/json');
-      return res.status(200).json(dto);
-    } else {
-      return res.sendStatus(200);
-    }
+  public ok<T>(res: express.Response, message?: string, dto?: T): express.Response {
+    res.type('application/json');
+    return res.status(200).send({
+      status: 'success',
+      message,
+      data: dto,
+    });
   }
 
   public created(res: express.Response): express.Response {
@@ -65,6 +65,7 @@ export abstract class BaseController {
   public fail(res: express.Response, error: Error | string) {
     // console.log(error);
     return res.status(500).json({
+      status: 'error',
       message: error.toString(),
     });
   }

@@ -1,19 +1,20 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
+import moment from 'moment';
 import * as dotenv from 'dotenv';
-import { injectable } from 'tsyringe';
+import { injectable, inject } from 'tsyringe';
 import { IDialerRepo } from '../dialerRepo';
 import { Dialer } from '../../domain/dialer';
 import { Mongo } from '../../../../shared/infra/database/mongo/index';
-import Logger from '../../../../shared/utils/LoggerUtils';
+import { ILogger } from '../../../../shared/utils/logger/ILogger';
 
 dotenv.config();
 
 @injectable()
 export class MongoDialerRepo implements IDialerRepo {
   private mongo: Mongo = new Mongo();
-  private logger: Logger;
+  private logger: ILogger;
 
-  constructor(logger: Logger) {
+  constructor(@inject('logger') logger: ILogger) {
     this.logger = logger;
   }
 
@@ -24,24 +25,23 @@ export class MongoDialerRepo implements IDialerRepo {
         .getCollection(process.env.DIALER_COLLECTION as string)
         .then((result) => result);
 
+      const now = moment.utc(moment.utc()).local().format('DD-MM-YYYY HH:mm:ss');
       if (collectionLeadHistory) {
         await collectionLeadHistory
           .insertOne({
             ...dialer.dialerToJson,
+            createdAt: now,
+            updatedAt: now,
           })
           .catch((error: any) => {
-            // eslint-disable-next-line curly
-            if (this.logger)
-              this.logger.error(`[path] [FAILED] [Mongo insert one] [${error.message as string}]`);
-            // throw new HttpError('ERROR_MONGO_INSERT_ONE', 'Mongo insert one element');
+            this.logger.error(`[MongoDialerRepo] [Mongo insert one] [${error.message as string}]`);
           });
       }
 
-      if (this.logger) this.logger.info('[path] [MongoDialerRepo] [OK] [Insert URL in Mongo]');
+      this.logger.info('[MongoDialerRepo] [OK]');
     } catch (error) {
-      // eslint-disable-next-line curly
-      if (this.logger)
-        this.logger.error(`[path] [MongoDialerRepo] [ERROR] [${error.message as string}]`);
+      this.logger.error(`[MongoDialerRepo] [ERROR] [${error.message as string}]`);
+      throw Error(`${error.message as string}`);
     } finally {
       await this.mongo.closeConnect();
     }

@@ -8,7 +8,6 @@ import { Guard } from '../../../core/Guard';
 import { Result } from '../../../core/Result';
 import { MongoClient } from 'mongodb';
 import { credentials } from './config';
-// import Logger from '../../../utils/LoggerUtils';
 
 export class Mongo {
   private mongoClient!: MongoClient;
@@ -63,12 +62,10 @@ export class Mongo {
     try {
       if (this.mongoClient) {
         const getCollection = await this.mongoClient.db(credentials.db).collection(collection);
-        // Logger.info(`[GetCollection] [OK] [Collection: ${collection}]`);
         return getCollection;
       }
     } catch (error) {
-      // Logger.error(`[GetCollection] [FAIL] [${error.message as string}]`);
-      // throw new HttpError(GENERIC_ERROR, error.message);
+      throw new Error(error.message);
     }
   }
 
@@ -76,11 +73,9 @@ export class Mongo {
     try {
       if (this.mongoClient) {
         await this.mongoClient.close();
-        // Logger.info('[CloseConnect] [OK]');
       }
     } catch (error) {
-      // Logger.error(`[CloseConnect] [FAIL] [${error as string}]`);
-      // throw new HttpError(GENERIC_ERROR, 'Close connect error');
+      throw new Error('Close connect error');
     }
   }
 }

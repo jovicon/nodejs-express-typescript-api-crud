@@ -10,18 +10,18 @@ import { Dialer, DialerProps } from '../../domain/dialer';
 import { ExecutiveID } from '../../domain/dialerExecutiveId';
 import { DialerPhone } from '../../domain/dialerPhone';
 import { Contact } from '../../domain/contact/contact';
-import Logger from '../../../../shared/utils/LoggerUtils';
+import { ILogger } from '../../../../shared/utils/logger/ILogger';
 
 type Response = Either<
-  CreateDialerErrors.MemberDoesntExistError | AppError.UnexpectedError | Result<any>,
+  CreateDialerErrors.DialerDoesntExistError | AppError.UnexpectedError | Result<any>,
   Result<void>
 >;
 @injectable()
 export class CreateDialer implements UseCase<CreateDialerDTO, Promise<Response>> {
   private dialerRepo: IDialerRepo;
-  private logger: Logger;
+  private logger: ILogger;
 
-  constructor(@inject('dialerRepo') dialerRepo: IDialerRepo, logger: Logger) {
+  constructor(@inject('dialerRepo') dialerRepo: IDialerRepo, @inject('logger') logger: ILogger) {
     this.dialerRepo = dialerRepo;
     this.logger = logger;
   }
@@ -33,6 +33,7 @@ export class CreateDialer implements UseCase<CreateDialerDTO, Promise<Response>>
     let dialer: Dialer;
 
     try {
+      // fields validation
       const executiveIDOrError = ExecutiveID.create({ value: request.executiveID });
 
       if (executiveIDOrError.isFailure) {
@@ -44,7 +45,7 @@ export class CreateDialer implements UseCase<CreateDialerDTO, Promise<Response>>
       const phoneOrError = DialerPhone.create({ value: request.phone });
 
       if (phoneOrError.isFailure) {
-        return left(executiveIDOrError);
+        return left(phoneOrError);
       }
 
       phone = phoneOrError.getValue();
@@ -70,7 +71,7 @@ export class CreateDialer implements UseCase<CreateDialerDTO, Promise<Response>>
       }
 
       dialer = postOrError.getValue();
-      this.logger.info(`[CreateDialer] ${JSON.stringify(dialer.dialerToJson)}`);
+      this.logger.info(`[CreateDialer] [Dialer validated] ${JSON.stringify(dialer.dialerToJson)}`);
       await this.dialerRepo.save(dialer);
 
       return right(Result.ok<void>());
