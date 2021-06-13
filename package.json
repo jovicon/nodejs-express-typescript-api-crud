@@ -14,11 +14,11 @@
     "prettier:check": "npm run prettier:base -- --list-different \"src/**/*.{ts,tsx}\"",
     "prettier:write": "npm run prettier:base -- --write \"src/**/*.{ts,tsx}\"",
     "husky:prepare": "husky install",
+    "build": "npm run build-ts && npm run lint",
+    "build-ts": "tsc -p tsconfig.json",
     "prestart": "npm run build",
     "start": "npm run serve",
-    "serve": "node ./dist/index.js",
-    "build": "npm run build-ts && npm run lint",
-    "build-ts": "tsc -p tsconfig.json"
+    "serve": "node ./dist/index.js"
   },
   "repository": {
     "type": "git",
