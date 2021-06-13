@@ -40,7 +40,7 @@ app.listen(PORT, () => {
   logger.server('| Routes Enabled');
   logger.server('|------------------------------------------------------------------|');
   listEndpoints(app).forEach((route: any, index: number) => {
-    logger.server(`${index + 1}.- ${JSON.stringify(route)}`);
+    logger.server(`| ${index + 1}.- ${JSON.stringify(route)}`);
   });
   logger.server('|------------------------------------------------------------------|\n');
 });
