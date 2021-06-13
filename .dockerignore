@@ -1,0 +1,16 @@
+**/.git
+**/.gitignore
+**/.vscode
+**/.husky
+**/.editorconfig
+**/.aws
+**/.env
+**/.env.example
+**/Dockerfile*
+**/node_modules
+**/dist
+**/npm-debug.log
+**/coverage
+**/LICENSE
+**/README.md
+
